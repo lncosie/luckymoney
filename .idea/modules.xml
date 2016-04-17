@@ -2,7 +2,7 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/luckymoney.iml" filepath="$PROJECT_DIR$/luckymoney.iml" />
+      <module fileurl="file://$PROJECT_DIR$/AndroidReplay.iml" filepath="$PROJECT_DIR$/AndroidReplay.iml" />
     </modules>
   </component>
 </project>

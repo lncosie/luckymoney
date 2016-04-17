@@ -1,15 +1,19 @@
 buildscript {
+    ext.kotlin_version = '1.0.1-2'
     repositories {
         mavenCentral()
     }
     dependencies {
-        classpath 'com.android.tools.build:gradle:0.11.1'
+        classpath 'com.android.tools.build:gradle:2.0.0'
+        classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
     }
 }
-apply plugin: 'android'
+apply plugin: 'com.android.application'
+apply plugin: 'kotlin-android'
 
 dependencies {
     compile fileTree(dir: 'libs', include: '*.jar')
+    compile "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
 }
 
 android {
@@ -20,16 +24,6 @@ android {
           abortOnError false
       }
 
-    productFlavors {
-	dashi {
-			packageName='com.dashiweiwu.dashi'
-	}
-	gaoning {
-			packageName='com.dashiweiwu.gaoning'
-	}
-	
-
-    }
 
     sourceSets {
         main {
@@ -53,5 +47,9 @@ android {
         // by a similar customization.
         debug.setRoot('build-types/debug')
         release.setRoot('build-types/release')
+        main.java.srcDirs += 'src/main/kotlin'
     }
+}
+repositories {
+    mavenCentral()
 }
