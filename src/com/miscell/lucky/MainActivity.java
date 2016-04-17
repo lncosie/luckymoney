@@ -138,6 +138,10 @@ public class MainActivity extends Activity {
         return false;
     }
 
+    /**
+     *
+     * @return
+     */
     private boolean isNotificationEnabled() {
         ContentResolver contentResolver = getContentResolver();
         String enabledListeners = Settings.Secure.getString(contentResolver, "enabled_notification_listeners");

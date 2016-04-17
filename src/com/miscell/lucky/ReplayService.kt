@@ -7,28 +7,37 @@ import android.view.accessibility.AccessibilityNodeInfo
 
 open class ReplayService:AccessibilityService(){
     var recorder:ActionRecorder? = null
+    var unworking =true
     lateinit var player:ActionPlayer
     lateinit var actions:List<Action>
-
+    /**
+     * loop replay when fail or success
+     */
     var loop=true
-    var wait=true
+    /**
+     * will call this function when start replay
+     */
     lateinit var start:()->Unit
+    /**
+     * will call this function when after replay
+     */
     lateinit var end:()->Unit
 
     fun start_record(){
         recorder=ActionRecorder()
-        wait=false
+        unworking =false
     }
+
     fun stop_record(){
         if(recorder!=null) {
             actions = recorder?.actions!!
             recorder = null
         }
-        wait=true
+        unworking =true
     }
     fun replay(){
         player= ActionPlayer(actions)
-        wait=false
+        unworking =false
     }
     override fun onInterrupt() {
 
@@ -37,15 +46,18 @@ open class ReplayService:AccessibilityService(){
         super.onServiceConnected()
     }
     override fun onAccessibilityEvent(event: AccessibilityEvent?) {
-        if(wait==true)
+        if(unworking ==true)
             return
         recorder?.onAction(this,event!!)
         try{
             player.onEvent(this,event!!)
         }catch(e:NodeNotFoundException) {
-            wait=true
+            unworking =true
             recovery()
             e.printStackTrace()
+        }catch(e:EndOfReplay){
+            unworking =true
+            recovery()
         }
     }
     fun recovery(){
@@ -54,6 +66,7 @@ open class ReplayService:AccessibilityService(){
         {
             start()
             player.start()
+            unworking =false
         }
     }
 }
